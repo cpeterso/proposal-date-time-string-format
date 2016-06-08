@@ -48,7 +48,7 @@
                     if (time.ms === undefined) {
                         time.ms = "000";
                     }
-                    if (time.z === undefined) {
+                    if (time.z === undefined || time.z === null) {
                         time.z = {sign:"+", hh:"01", mm:"00"}
                     } else {
                         if (time.z.hh === undefined) {

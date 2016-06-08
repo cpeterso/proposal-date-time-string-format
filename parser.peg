@@ -7,29 +7,27 @@ DateTime
     / date:DatePart { return {date}; }
 
 TimePart
-    = hh:Hr TimeSeparator mm:Min TimeSeparator ss:Sec "." ms:Msec z:Z {
+    = hh:Hr TimeSeparator mm:Min TimeSeparator ss:Sec "." ms:Msec z:Z? {
         return {hh, mm, ss, ms, z};
     }
-    / hh:Hr TimeSeparator mm:Min TimeSeparator ss:Sec "." ms:Msec {
-        return {hh, mm, ss, ms};
+    / hh:Hr TimeSeparator mm:Min TimeSeparator ss:Sec z:Z? {
+        return {hh, mm, ss, z};
     }
-    / hh:Hr TimeSeparator mm:Min TimeSeparator ss:Sec {
-        return {hh, mm, ss};
-    }
-    / hh:Hr TimeSeparator mm:Min {
+    / hh:Hr TimeSeparator mm:Min z:Z? {
         return {hh, mm};
     }
-    / hh:Hr {
+    / hh:Hr z:Z? {
         return {hh};
     }
 
 Z
-    = sign:([+-])? hh:Hr mm:(TimeSeparator Min) {
+    = sign:[+-] hh:Hr mm:(TimeSeparator Min) {
         if (sign === null) {
             sign = "+";
         }
         return {sign, hh, mm:mm[1]};
     }
+    / "Z" { return {sign: "+", hh: "00", mm: "00"}; }
 
 Msec = sss:(N? N? N)      { return sss.join(''); }
 Sec  = s:ZeroToSixty      { return s.join(''); }
