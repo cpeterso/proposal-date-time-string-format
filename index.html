@@ -81,7 +81,7 @@
                 output.innerHTML += new Date(dateField.value).toString();
                 output.innerHTML += "<br/><br/>";
                 output.innerHTML += "Parse Tree: ";
-                output.innerHTML += parseTree;
+                output.innerHTML += parseTree.toSource();
 
             } catch (e) {
                 output.innerHTML = e;
