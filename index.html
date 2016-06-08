@@ -79,6 +79,13 @@
                 output.innerHTML += "<br/><br/> <code>new Date('"
                 output.innerHTML += dateField.value + "')</code> with <b>existing parser</b> : ";
                 output.innerHTML += new Date(dateField.value).toString();
+
+                // Some lucky users have access to the toSource method.
+                if (parseTree.toSource) {
+                    output.innerHTML += "<br/><br/>";
+                    output.innerHTML += "parse tree: " + parseTree.toSource();
+                }
+
             } catch (e) {
                 output.innerHTML = e;
             }
