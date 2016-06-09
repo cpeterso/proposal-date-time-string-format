@@ -1,4 +1,4 @@
-see: http://mrrrgn.com/date
+note: You can play with the parser [here](http://mrrrgn.com/date), it has been generated using [pegjs](http://pegjs.org)
 
 `Date.parse` has been breaking cross-engine compatibility for over a decade now, and it's easy to see why when reading the spec:
 
