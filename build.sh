@@ -2,16 +2,16 @@
 
 set -e
 
-mkdir -p build;
-cd build;
-
 # Generate a new parser.
-pegjs ../parser.peg
+pegjs parser.peg;
 
 # Generate a htmlified version of the grammar.
-echo "<html>" > parser.html
-cat ../parser.peg | sed 1d | sed 1d | sed 1d | \
+mkdir -p build;
+echo "<html>" > build/parser.html
+cat parser.peg | sed 1d | sed 1d | sed 1d | \
     awk -F "\n" '{print $0 " <br/>"}' | \
-    sed 's/ /\&nbsp;/g' >> parser.html
+    sed 's/ /\&nbsp;/g' >> build/parser.html;
 
-echo "</html>" >> parser.html
+echo "</html>" >> build/parser.html;
+
+mv parser.js build/parser.js;
