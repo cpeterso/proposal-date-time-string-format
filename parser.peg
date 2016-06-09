@@ -103,7 +103,7 @@ Day
 MonthName
     = m:("jan"/ "feb" / "mar" / "apr" /
           "may" / "jun" / "jul" / "aug" /
-          "sep" / "oct" / "nov" / "dec") { return m; }
+          "sep" / "oct" / "nov" / "dec") "."? { return m; }
 
 DateSeparator
     = _* "-" _*
