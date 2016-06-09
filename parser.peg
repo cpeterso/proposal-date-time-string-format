@@ -38,12 +38,12 @@ ZeroToTwentyFour = [2] [0-4] / [1] N / [0]? N
 ZeroToFiftyNine      = [1-5] N / [0]? N
 
 TimeSeparator
-    = _
-    / ":"
+    = _* ":" _*
+    / _+
 
 DateTimeSeparator
-    = _
-    / "T"
+    = _* "T" _*
+    / _+
 
 DatePart
     = year:ExtendedYear DateSeparator month:Month DateSeparator day:Day {
@@ -106,14 +106,14 @@ MonthName
           "sep" / "oct" / "nov" / "dec") { return m; }
 
 DateSeparator
-    = _+
-    / _* "-" _*
+    = _* "-" _*
     / _* "/" _*
     / _* "," _*
+    / _+
 
 MonthNameSeparator
-    = _
-    / ","
+    = _* "," _*
+    / _+
 
 Comment
     = "(" [a-zA-Z0-9_ \/\\!._'"]* ")"
