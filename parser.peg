@@ -29,7 +29,11 @@ Z
     }
     / "Z" { return {sign: "+", hh: "00", mm: "00"}; }
 
-Msec = sss:(N? N? N)      { return sss.join(''); }
+Msec
+    = sss:(N N N) { return parseInt(sss.join('')); }
+    / sss:(N N)   { return parseInt(sss.join('')) * 10; }
+    / sss:N       { return parseInt(sss) * 100; }
+
 Sec  = s:ZeroToFiftyNine  { return s.join(''); }
 Min  = m:ZeroToFiftyNine  { return m.join(''); }
 Hr   = h:ZeroToTwentyFour { return h.join(''); }
