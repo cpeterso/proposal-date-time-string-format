@@ -27,62 +27,77 @@ DateTime<br/>&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;date:DatePart&nbsp;DateTimeSeparator
         var months = {jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12};
         function parse() {
             try {
-                var parseTree = module.exports.parse(dateField.value);
-                var date = parseTree.date;
-                if (date.month.length > 2) {
-                    date.month = months[date.month];
-                }
-                var datePart = date.year + "-" + date.month + "-" + date.day
-                var time = parseTree.time;
-                var timePart = "T00:00:00.000-07:00";
-                if (time !== undefined) {
-                    if (time.hh === undefined ) {
-                        time.hh = "00";
-                    }
-                    if (time.mm === undefined) {
-                        time.mm = "00";
-                    }
-                    if (time.ss === undefined) {
-                        time.ss = "00";
-                    }
-                    if (time.ms === undefined) {
-                        time.ms = "000";
-                    }
-                    if (time.z === undefined || time.z === null) {
-                        time.z = {sign:"+", hh:"01", mm:"00"}
-                    } else {
-                        if (time.z.hh === undefined) {
-                            time.z.hh = "00";
-                        }
-                        if (time.z.mm === undefined) {
-                            time.z.mm = "00";
-                        }
-                    }
+                var parseTree;
+                var result;
+                var syntaxError = false;
 
-                   timePart = "T";
-                   timePart += time.hh;
-                   timePart += ":";
-                   timePart += time.mm;
-                   timePart += ":";
-                   timePart += time.ss;
-                   timePart += ".";
-                   timePart += time.ms;
-                   timePart += time.z.sign;
-                   timePart += time.z.hh;
-                   timePart += ":";
-                   timePart += time.z.mm;
+                try {
+                    parseTree = module.exports.parse(dateField.value);
+                } catch(e) {
+                    syntaxError = true;
+                    parseTree = e;
+                }
+
+                if (!syntaxError) {
+                    var date = parseTree.date;
+                    if (date.month.length > 2) {
+                        date.month = months[date.month];
+                    }
+                    var datePart = date.year + "-" + date.month + "-" + date.day
+                    var time = parseTree.time;
+                    var timePart = "T00:00:00.000-07:00";
+                    if (time !== undefined) {
+                        if (time.hh === undefined ) {
+                            time.hh = "00";
+                        }
+                        if (time.mm === undefined) {
+                            time.mm = "00";
+                        }
+                        if (time.ss === undefined) {
+                            time.ss = "00";
+                        }
+                        if (time.ms === undefined) {
+                            time.ms = "000";
+                        }
+                        if (time.z === undefined || time.z === null) {
+                            time.z = {sign:"+", hh:"01", mm:"00"}
+                        } else {
+                            if (time.z.hh === undefined) {
+                                time.z.hh = "00";
+                            }
+                            if (time.z.mm === undefined) {
+                                time.z.mm = "00";
+                            }
+                        }
+
+                       timePart = "T";
+                       timePart += time.hh;
+                       timePart += ":";
+                       timePart += time.mm;
+                       timePart += ":";
+                       timePart += time.ss;
+                       timePart += ".";
+                       timePart += time.ms;
+                       timePart += time.z.sign;
+                       timePart += time.z.hh;
+                       timePart += ":";
+                       timePart += time.z.mm;
+                    }
+                    result = new Date(datePart + timePart).toString();
                 }
 
                 output.innerHTML = "<code>new Date('"
                 output.innerHTML += dateField.value + "')</code> with <b>this parser</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: ";
-                output.innerHTML += new Date(datePart + timePart).toString();
+                output.innerHTML += result === undefined ? "Invalid Date" : result;
                 output.innerHTML += "<br/><br/> <code>new Date('"
                 output.innerHTML += dateField.value + "')</code> with <b>existing parser</b> : ";
                 output.innerHTML += new Date(dateField.value).toString();
 
-                // Some lucky users have access to the toSource method.
-                if (parseTree.toSource) {
-                    output.innerHTML += "<br/><br/>";
+                output.innerHTML += "<br/><br/>";
+                if (syntaxError) {
+                    output.innerHTML += parseTree;
+                } else if (parseTree.toSource) {
+                    // Some lucky users have access to the toSource method.
                     output.innerHTML += "parse tree: " + parseTree.toSource();
                 }
 
