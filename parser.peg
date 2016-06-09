@@ -30,12 +30,12 @@ Z
     / "Z" { return {sign: "+", hh: "00", mm: "00"}; }
 
 Msec = sss:(N? N? N)      { return sss.join(''); }
-Sec  = s:ZeroToSixty      { return s.join(''); }
-Min  = m:ZeroToSixty      { return m.join(''); }
+Sec  = s:ZeroToFiftyNine  { return s.join(''); }
+Min  = m:ZeroToFiftyNine  { return m.join(''); }
 Hr   = h:ZeroToTwentyFour { return h.join(''); }
 
 ZeroToTwentyFour = [2] [0-4] / [1] N / [0]? N
-ZeroToSixty      = [1-5] N / [0]? N
+ZeroToFiftyNine      = [1-5] N / [0]? N
 
 TimeSeparator
     = _
@@ -95,7 +95,7 @@ Month
     / m:([0]? N)   { return m.join(''); }
 
 Day
-    = d:([3][1])  { return d.join(''); }
+    = d:([3][0-1])  { return d.join(''); }
     / d:([2] N)   { return d.join(''); }
     / d:([1] N)   { return d.join(''); }
     / d:([0]? N1) { return d.join(''); }
@@ -106,10 +106,10 @@ MonthName
           "sep" / "oct" / "nov" / "dec") { return m; }
 
 DateSeparator
-    = _
-    / "-"
-    / "/"
-    / ","
+    = _+
+    / _* "-" _*
+    / _* "/" _*
+    / _* "," _*
 
 MonthNameSeparator
     = _
