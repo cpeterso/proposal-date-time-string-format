@@ -1589,7 +1589,7 @@ module.exports = (function() {
     }
 
     function peg$parseMonthName() {
-      var s0, s1;
+      var s0, s1, s2;
 
       s0 = peg$currPos;
       if (input.substr(peg$currPos, 3) === peg$c45) {
@@ -1699,10 +1699,28 @@ module.exports = (function() {
         }
       }
       if (s1 !== peg$FAILED) {
-        peg$savedPos = s0;
-        s1 = peg$c69(s1);
+        if (input.charCodeAt(peg$currPos) === 46) {
+          s2 = peg$c2;
+          peg$currPos++;
+        } else {
+          s2 = peg$FAILED;
+          if (peg$silentFails === 0) { peg$fail(peg$c3); }
+        }
+        if (s2 === peg$FAILED) {
+          s2 = null;
+        }
+        if (s2 !== peg$FAILED) {
+          peg$savedPos = s0;
+          s1 = peg$c69(s1);
+          s0 = s1;
+        } else {
+          peg$currPos = s0;
+          s0 = peg$FAILED;
+        }
+      } else {
+        peg$currPos = s0;
+        s0 = peg$FAILED;
       }
-      s0 = s1;
 
       return s0;
     }
